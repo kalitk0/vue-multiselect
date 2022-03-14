@@ -668,9 +668,11 @@ export default {
      * Sets this.isOpen to FALSE
      */
     deactivate (e) {
-      if(e !== undefined)
-        if(e.relatedTarget.localName == 'input')
-          return;
+      if (e !== undefined) {
+        if (e.relatedTarget.localName === 'input') {
+          return
+        }
+      }
       /* istanbul ignore else */
       if (!this.isOpen) return
 
