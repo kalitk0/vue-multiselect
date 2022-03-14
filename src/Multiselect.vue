@@ -3,7 +3,7 @@
     :tabindex="searchable ? -1 : tabindex"
     :class="{ 'multiselect--active': isOpen, 'multiselect--disabled': disabled, 'multiselect--above': isAbove }"
     @focus="activate()"
-    @blur="searchable ? false : deactivate()"
+    @blur="searchable ? false : deactivate($event)"
     @keydown.self.down.prevent="pointerForward()"
     @keydown.self.up.prevent="pointerBackward()"
     @keypress.enter.tab.stop.self="addPointerElement($event)"
