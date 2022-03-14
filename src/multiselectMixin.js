@@ -667,7 +667,10 @@ export default {
      * Closes the multiselect’s dropdown.
      * Sets this.isOpen to FALSE
      */
-    deactivate () {
+    deactivate (e) {
+      if(e !== undefined)
+        if(e.relatedTarget.localName == 'input')
+          return;
       /* istanbul ignore else */
       if (!this.isOpen) return
 
