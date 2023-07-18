@@ -67,7 +67,8 @@ export default {
       search: '',
       isOpen: false,
       preferredOpenDirection: 'below',
-      optimizedHeight: this.maxHeight
+      optimizedHeight: this.maxHeight,
+        currentHex: ''
     }
   },
   props: {
@@ -89,6 +90,11 @@ export default {
     options: {
       type: Array,
       required: true
+    },
+
+    hex: {
+        type: Boolean,
+        default: false
     },
     /**
      * Equivalent to the `multiple` attribute on a `<select>` input.
@@ -329,6 +335,8 @@ export default {
     ) {
       this.select(this.filteredOptions[0])
     }
+    if(this.hex)
+        this.currentHex = this.internalValue[0].hex
   },
   computed: {
     internalValue () {
@@ -377,6 +385,7 @@ export default {
       const options = this.groupValues ? this.flatAndStrip(this.options) : this.options
       return options.map(element => this.customLabel(element, this.label).toString().toLowerCase())
     },
+
     currentOptionLabel () {
       return this.multiple
         ? this.searchable ? '' : this.placeholder
@@ -398,6 +407,15 @@ export default {
     }
   },
   methods: {
+      changeHex(e) {
+
+          this.currentHex = e.target.value
+          this.$emit('changeHex', this.currentHex)
+      },
+      away() {
+         if(this.isOpen)
+             this.deactivate()
+      },
     /**
      * Returns the internalValue in a way it can be emited to the parent
      * @returns {Object||Array||String||Integer}
@@ -532,6 +550,9 @@ export default {
           this.$emit('input', option, this.id)
         }
 
+      if(this.hex){
+          this.currentHex = option.hex
+      }
         /* istanbul ignore else */
         if (this.clearOnSelect) this.search = ''
       }
@@ -668,9 +689,13 @@ export default {
      * Sets this.isOpen to FALSE
      */
     deactivate (e) {
+        console.log(e)
       if (e !== undefined) {
-        if (e.relatedTarget.localName === 'input') {
-          return
+        if (e.relatedTarget !== null && e.relatedTarget.localName === 'input') {
+          if(this.isOpen) {
+
+              return
+          }
         }
       }
       /* istanbul ignore else */
